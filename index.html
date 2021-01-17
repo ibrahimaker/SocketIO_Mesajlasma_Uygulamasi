@@ -1,0 +1,62 @@
+<html lang="tr">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gerçek zamanlı İletişim: Socket.io</title>
+  <!--socket.io client kütüphanesini ekliyoruz -->
+  <script src="socket.io.js"></script>
+ 
+</head>
+
+<body>
+  <h1>Our Socket.io Chat Application</h1>
+   <div>
+     <h2>Messages</h2>
+     <ul></ul>
+   </div>
+   <form action="" id="messageForm">
+     <input type="text" />
+     <button>Send</button>
+   </form>
+   <script>
+
+    
+    const form = document.querySelector("form");
+    const input = document.querySelector("input");
+    messageList = document.querySelector("ul");
+   
+    // socket io bağlantısı kur
+    const socket = io("127.0.0.1:3000");
+   
+    // Mesaj Gönderme Metodu 
+    function sendMessage(e) {
+      e.preventDefault();
+      // Sunucuya input içindeki değeri gönderir
+      socket.emit("message", input.value);
+      // input'u temizler
+      input.value = "";
+    }
+   
+    // li
+    document.getElementById('messageForm').addEventListener("submit", sendMessage);
+   
+    // mesajı sayfaya ekleme metodu
+    function addMessageToHTML(message) {
+      const li = document.createElement("li");
+      li.innerText = message;
+      messageList.append(li);
+    }
+     // Socket'in gönderdiği mesajları dinle
+    socket.on("message", addMessageToHTML);
+   
+    function alertUserConnected() {
+      addMessageToHTML("User bağlandı");
+    }
+     // Yeni bir kullanıcı bağlandığında bu metod tetiklenecektir. 
+    socket.on("UserConnected", alertUserConnected);
+   
+   </script>
+</body>
+
+</html>
