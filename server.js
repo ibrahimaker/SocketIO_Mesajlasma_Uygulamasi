@@ -24,15 +24,15 @@ io.on('connection', (socket) => {
  //client'dan gelecek mesajları dinliyoruz   
       socket.on("message", function(msg){
         console.log('socket: ' + msg);
-        // aynı mesajı tüm bağlanan kullanıcılara gönderiyoruz.
-        // bu şekilde mesaj bir yerden geliyor, bir çok yere dağıtılıyor.
+        // aynı mesajı tüm bağlanan kullanıcılara (odalara) gönderiyoruz.
+        // bu şekilde mesaj broadcasting yayın yapar..
         io.emit("message", msg);
     });
       
   });
 
   io.on("disconnect", () => {
-    //socket ara ara kopabiliyor, disconnect olması durumunda burada düşer
+    //socket'in disconnnected olması durumunda buraya düşer.
     console.info('disconnected socket: ', socket.id);
 });
 
